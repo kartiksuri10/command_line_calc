@@ -21,27 +21,23 @@ int yylex();
 void yyerror(const char *s);
 %}
 
-/* Declare the value type */
 %union {
-    double fval;    /* For numbers */
-    char *sval;     /* For variable names */
+    double fval;
+    char *sval;
 }
 
-/* Tokens with value types */
 %token <fval> NUMBER
 %token <sval> ID
 %token ASSIGN PLUS MINUS MULT DIV POW LPAREN RPAREN EOL
-%token SIN COS TAN
+%token SIN COS TAN LOG LN SEC COSEC COT
 
-/* Declare the nonterminal value types */
 %type <fval> expr
 %type <sval> line
 
-/* Operator precedence */
 %left PLUS MINUS
 %left MULT DIV
 %right POW
-%nonassoc SIN COS TAN
+%nonassoc SIN COS TAN LOG LN SEC COSEC COT
 
 %%
 
@@ -65,15 +61,20 @@ expr:
     | SIN expr { $$ = sin($2); }
     | COS expr { $$ = cos($2); }
     | TAN expr { $$ = tan($2); }
+    | LOG expr { $$ = log10($2); }
+    | LN expr  { $$ = log($2); }
+    | SEC expr { $$ = 1 / cos($2); }
+    | COSEC expr { $$ = 1 / sin($2); }
+    | COT expr { $$ = 1 / tan($2); }
     | LPAREN expr RPAREN { $$ = $2; }
     ;
 
 %%
-int main() {
-    printf("Simple Calculator (Type expressions and press Enter)\n");
-    printf("Type 'exit' to quit.\n");
 
-    yyparse();  // Call the parser
+int main() {
+    printf("Extended Calculator (Type expressions and press Enter)\n");
+    printf("Type 'exit' to quit.\n");
+    yyparse();
     return 0;
 }
 
