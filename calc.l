@@ -22,6 +22,11 @@ WHITESPACE  [ \t]+
 "sin"       { return SIN; }
 "cos"       { return COS; }
 "tan"       { return TAN; }
+"log"       { return LOG; }
+"ln"        { return LN; }
+"sec"       { return SEC; }
+"cosec"     { return COSEC; }
+"cot"       { return COT; }
 {ID}        { yylval.sval = strdup(yytext); return ID; }
 \n          { return EOL; }
 {WHITESPACE} { /* Ignore whitespace */ }
